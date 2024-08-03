@@ -146,6 +146,12 @@ const routes = [
 ```
 
 13. **Sensitive and Strict Route Options**:
+  
+By default, all routes are `case-insensitive` and `match routes with or without a trailing slash`. e.g. a `route /users matches /users, /users/, and even /Users/`. This behavior can be configured with the strict and sensitive options, they can be set both at a router and route level:
+
+`sensitive`: When set to true, the route will be case-sensitive. (default: false)
+`strict`: When set to true, the route will be strict. (default: false),i.e., it will not match the route if there is a trailing slash.
+
 ```javascript
 const router = createRouter({
   history: createWebHistory(),
@@ -158,5 +164,158 @@ const router = createRouter({
     { path: '/users/:id?' },
   ],
   strict: true, // applies to all routes
+}) //if we try to access /Users/posva, it will not match the route and the output will be 404
+```
+
+14. **Optional Parameters**: You can have optional parameters in the URL.
+```javascript
+const routes = [
+  // matches /user, /user/123, /user/123/edit
+  path: '/user/:id/edit?',
+  component: UserEditPage
+]
+```
+
+15. **Nested Routes**: You can have nested routes in Vue Router.
+```javascript
+const routes = [
+  {
+    name: 'user/:id',
+    component: User,
+    children: [
+      {
+        name: 'profile',
+        path: 'profile',
+        component: UserProfile
+      },
+      {
+        name: 'posts',
+        path: 'posts',
+        component: UserPosts    
+      }
+    ]
+  }
+]
+```
+The above configuration will match the following URLs:
+- `/user` -> User component
+- `/user/profile` -> UserProfile component
+- `/user/posts` -> UserPosts component
+- `/user/profile/posts` -> User component with UserProfile and UserPosts components nested inside it.
+- `/user/posts/profile` -> User component with UserPosts and UserProfile components nested inside it.
+
+
+16. **Named Routes**: You can name your routes for easier navigation.
+```javascript
+const routes = [
+  {
+    name: 'user',
+    route: '/user/:id',
+    component: User
+  }
+]
+```
+
+17. **Named Views**: You can have multiple views in a single route.
+```javascript
+const routes = createRouter({
+  history: createWebHashHistory(),
+  routes: [
+    {
+      path: '/',
+      components: {
+        default: Home,
+        // short for LeftSidebar: LeftSidebar
+        LeftSidebar,
+        // they match the `name` attribute on `<router-view>`
+        RightSidebar,
+      },
+    },
+  ],
 })
 ```
+18. **Nested Named Views**: You can have nested named views in Vue Router.
+```javascript
+const routes = createRouter({
+  history: createWebHashHistory(),
+  routes: [
+    {
+      path: '/',
+      components: {
+        default: Home,
+        LeftSidebar,
+        RightSidebar,
+      },
+      children: [
+      {
+        path: 'child',
+        components: {
+          default: ChildComponent,
+          LeftSidebar: ChildLeftSidebar,
+          RightSidebar: ChildRightSidebar,
+        },
+      },
+    ],
+  },
+];
+```
+19. **Redirect and Alias**: You can use the redirect and alias properties in Vue Router.
+
+`Alias`: to allow multiple paths to render the same component.
+
+```javascript
+const routes = [
+  {
+path: '/',
+    component: Home,
+  },
+  {
+    path: '/about',
+    component: About,
+  },
+  {
+    path: '/home',
+    redirect: '/', // Redirect /home to /
+  },
+  {
+    path: '/user/:id',
+    component: User,
+    alias: '/profile/:id', // Alias /profile/:id to /user/:id
+  },
+];
+```
+
+20. **Passing Props to Route Components**: You can pass props to route components in Vue Router.
+```javascript
+const routes = [
+  {
+  path: '/user/:id',
+  component: User,
+  props: true
+}
+]
+```
+21. **Active Links**:
+    
+```html
+<template>
+  <div>
+    <router-link to="/" active-class="active-link">Home</router-link>
+    <router-link to="/about" active-class="active-link">About</router-link>
+  </div>
+</template>
+
+<style>
+.active-link {
+  font-weight: bold;
+  color: red;
+}
+</style>
+```
+
+A RouterLink is considered to be `active` if:
+
+1. It **matches the same route record (i.e. configured route) as the current location.**
+2. It **has the same values for the params as the current location.**
+
+If you're using `nested routes`, `any links to ancestor routes will also be considered active if the relevant params match`.
