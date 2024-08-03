@@ -15,9 +15,9 @@ Single Page Applications (SPA): Vue Router lets you build a SPA, where users can
 
 ## Components: These are the different pages or views of your application. You create a component for each part of your application (like Home, About, Contact).
 
-### <router-link>: This is a special link used in your templates. When you click it, Vue Router will show the component associated with its to attribute without reloading the page.
+`<router-link>`: This is a special link used in your templates. When you click it, Vue Router will show the component associated with its to attribute without reloading the page.
 
-### <router-view>: This is a placeholder component where Vue Router displays the current route's component.
+ `<router-view>`: This is a placeholder component where Vue Router displays the current route's component.
 
 ### How Does It Work? - A Simple Example
 
