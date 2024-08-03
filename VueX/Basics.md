@@ -149,10 +149,16 @@ export default {
     }
 }
 ```
-Here we are using the `mapState` helper to map the `count` state to the component, the `mapGetters` helper to map the `getCount` getter to the component, the `mapMutations` helper to map the `increment` and `decrement` mutations to the component, and the `mapActions` helper to map the `increment` and `decrement` actions to the component.
+Here we are using the `mapState` helper to map the `count` state to the component, 
+
+the `mapGetters` helper to map the `getCount` getter to the component, 
+
+the `mapMutations` helper to map the `increment` and `decrement` mutations to the component, 
+
+and the `mapActions` helper to map the `increment` and `decrement` actions to the component.
 
 
 
 
 
-That's it! You now have a basic understanding of how to use Vuex in your Vue.js applications. Happy coding!
+
