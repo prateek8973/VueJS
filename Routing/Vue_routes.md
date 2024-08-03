@@ -57,7 +57,7 @@ app.use(router);
 ```
 
 5. Add `<router-link>` and `<router-view>` to your template
-1. 
+ 
 ```javascript
 <router-link to="/">Home</router-link>
 <router-link to="/about">About</router-link>
@@ -78,7 +78,7 @@ app.use(router);
 <router-view></router-view>
 ```
 
-7. Route Parameters: You can also pass parameters in the URL, like `/user/123`. Vue Router can extract these parameters and pass them to your components.
+7. **Route Parameters**: You can also pass parameters in the URL, like `/user/123`. Vue Router can extract these parameters and pass them to your components.
 
 ```javascript
 const routes = [
@@ -95,7 +95,7 @@ Here `:id` is a parameter that can be accessed in the `UserPage` component.
 8. `$route`: This is an object that represents the **current route**. You can access the route's parameters, query, and other information through this object.
     -`$route.params`: This is an object containing the route parameters. For example, if the URL is `/user/123`, `$route.params.id` will be `123`.
 
-9. Redirects: You can redirect users to a different route using the `redirect` property in the route configuration.
+9. **Redirects**: You can redirect users to a different route using the `redirect` property in the route configuration.
 ```javascript
 const routes = [   
     path: '/home',//old path
@@ -110,7 +110,7 @@ const routes = [
    path: '/:catchAll(.*)', //catch all routes that are not defined
     redirect: '/not-found' //redirect to not-found page
 ```
-10. Navigation: You can navigate programmatically using the `$router` object.
+10. **Navigation**: You can navigate programmatically using the `$router` object.
     - `$router.push({ name: 'user', params: { id: 123 } })`: This will navigate to the `user` route with the parameter `id` set to `123`.
     - `$router.push('/about')`: This will navigate to the `/about` route.
     - `$router.go(-1)`: This will go back to the previous page in the history.
@@ -125,3 +125,38 @@ $router.push({ name: 'user', params}}: { id: 123 } });
 ```    
 
 
+11. **Custom Regex in Params**: You can use custom regex patterns in route parameters.
+```javascript
+const routes = [
+  // matches /o/3549
+  { path: '/o/:orderId' },
+  // matches /p/books
+  { path: '/p/:productName' },
+]
+```
+
+12. **Repeatable Params**: You can have repeatable parameters in the URL.
+```javascript
+const routes = [
+  // /:chapters -> matches /one, /one/two, /one/two/three, etc
+  { path: '/:chapters+' },
+  // /:chapters -> matches /, /one, /one/two, /one/two/three, etc
+  { path: '/:chapters*' },
+]
+```
+
+13. **Sensitive and Strict Route Options**:
+```javascript
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    // will match /users/posva but not:
+    // - /users/posva/ because of strict: true
+    // - /Users/posva because of sensitive: true
+    { path: '/users/:id', sensitive: true },
+    // will match /users, /Users, and /users/42 but not /users/ or /users/42/
+    { path: '/users/:id?' },
+  ],
+  strict: true, // applies to all routes
+})
+```
